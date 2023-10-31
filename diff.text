@@ -1,0 +1,48 @@
+diff --git a/src/main.rs b/src/main.rs
+index d954198..44bb4cf 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -6,17 +6,6 @@ use std::path::Path;
+ 
+ #[tokio::main]
+ async fn main() -> Result<()> {
+-    println!("{}", env::var("PATH").expect("PATH is not set"));
+-
+-    // let prompt = "INSTRUCTIONS: Only respond with the exact Git command or simple list of Git commands \
+-    // I need to run to achieve my stated goal. Do not provide any other commentary or confirmations. Attempt \
+-    // to automatically determine the value of required parameters based on the context of the statement. For example, \
+-    // if I tell you to create a new local branch to work on some feature, name the new local branch \
+-    // 'users/ccrook/<some feature>' where '<some feature>' is a meaninful name based on the context. \
+-    // If you can't determine a particular required or ideally included parameter from the context, \
+-    // put a placeholder in the command like [UPDATE_VALUE], where 'UPDATE_VALUE' is a meaningful name \
+-    // of the required input. GOAL: ";
+-
+     let exe_file = env::args().take(1).next().expect("Executable path not passed to args");
+     
+     let exe_file_path = Path::new(exe_file.as_str());
+@@ -61,24 +50,10 @@ async fn main() -> Result<()> {
+         let parts: Vec<String> = winsplit::split(command);
+         let command_exe = parts.first().expect("Command is empty");
+         let mut process = process::Command::new(command_exe);
+-        
++
+         process.args(parts.into_iter().skip(1)).stdout(process::Stdio::inherit()).stderr(process::Stdio::inherit());
+         process.spawn()?.wait().expect("Failed to execute command");
+     }
+ 
+-    // for (name, _) in env::vars() {
+-    //     println!("{}", name);
+-    // }
+-
+-    // match env::var(key_name) {
+-    //     Ok(value) => {
+-    //         println!("Found");
+-    //         key = value;
+-    //     }
+-    //     Err(_) => {}
+-    // }
+-    
+-    // println!("Hello, world! The secret is: {}", key);
+-
+     Ok(())
+ }
