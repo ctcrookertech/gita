@@ -1,4 +1,3 @@
-//use clap::*;
 use chatgpt::prelude::*;
 use std::{env, io, io::Read, fs, process};
 use std::path::Path;
