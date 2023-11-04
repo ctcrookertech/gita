@@ -1,16 +1,16 @@
 use chatgpt::prelude::*;
 use std::{env, io, io::Read, fs, process};
-use std::path::Path;
 use regex;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let exe_file = env::args().take(1).next().expect("Executable path not passed to args");
-    
-    let exe_file_path = Path::new(exe_file.as_str());
+    let exe_file_path = env::current_exe().expect("Executable path not found");
     let cwd_path = exe_file_path.parent().expect("Executable path is empty");
     let prompt_file_path = cwd_path.join("gita.prompt.txt");
-    let prompt = fs::read_to_string(prompt_file_path).expect("Prompt file does not exist");
+
+    println!("Using prompt from {}", prompt_file_path.to_string_lossy());
+
+    let prompt = fs::read_to_string(prompt_file_path).expect("Prompt file not read");
     let replace_pattern = regex::Regex::new(r"\|> (.*) <\|").unwrap();
     let mut updated_prompt = prompt.clone();
 
